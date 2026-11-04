@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Petualangan Perkalian Pecahan</title>
+<style>
+:root{--blue:#3b82c4;--blue-d:#1f5fa0;--blue-l:#dbeafe;--sage:#8fa67b;--sage-d:#5f7a4c;--sage-l:#e4ebdc;--bg:#eef5fb;--card:#fff;--text:#1d3550;--ok:#e3f1d8;--no:#fde8e4;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--blue:#5b9bd8;--blue-d:#8fbfee;--blue-l:#1f3a57;--sage:#9db48a;--sage-d:#b9cfa6;--sage-l:#2a3a2a;--bg:#0f1c29;--card:#182b3d;--text:#e8f0f7;--ok:#2a3f26;--no:#4a2a26;color-scheme:dark}}
+:root[data-theme="dark"]{--blue:#5b9bd8;--blue-d:#8fbfee;--blue-l:#1f3a57;--sage:#9db48a;--sage-d:#b9cfa6;--sage-l:#2a3a2a;--bg:#0f1c29;--card:#182b3d;--text:#e8f0f7;--ok:#2a3f26;--no:#4a2a26;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{background:var(--bg);color:var(--text);font-family:"Baloo 2","Trebuchet MS","Comic Sans MS",system-ui,sans-serif;font-size:18px;line-height:1.5;overflow-x:hidden}
+.bg{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.bg span{position:absolute;font-size:44px;font-weight:800;opacity:.14;color:var(--blue);animation:fl 9s ease-in-out infinite}
+.bg span:nth-child(even){color:var(--sage)}
+@keyframes fl{50%{transform:translateY(-26px) rotate(12deg)}}
+.app{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:14px 14px 90px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.brand{font-weight:800;color:var(--blue-d)}
+.dots{display:flex;gap:6px}
+.dots i{width:12px;height:12px;border-radius:50%;background:var(--sage-l);border:2px solid var(--sage);transition:.3s}
+.dots i.on{background:var(--blue);border-color:var(--blue);transform:scale(1.25)}
+.slide{display:none;background:var(--card);border-radius:28px;border:3px solid var(--blue);box-shadow:0 8px 0 var(--sage);padding:22px 20px;animation:pop .45s ease}
+.slide.act{display:block}
+@keyframes pop{from{opacity:0;transform:translateY(16px) scale(.97)}}
+h1{font-size:2rem;line-height:1.15;margin:.2em 0;color:var(--blue-d)}
+h2{font-size:1.55rem;margin:0 0 .5em;color:var(--blue-d)}
+.chip{display:inline-block;background:var(--sage-l);color:var(--sage-d);border-radius:99px;padding:3px 14px;font-weight:700;font-size:.9rem;margin:3px 3px 3px 0}
+.mascot{font-size:84px;display:inline-block;animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-10px) rotate(-4deg)}}
+.center{text-align:center}
+.btn{font:inherit;font-weight:800;border:0;border-radius:99px;padding:10px 24px;cursor:pointer;background:var(--blue);color:#fff;box-shadow:0 5px 0 var(--blue-d);transition:transform .12s}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--blue-d)}
+.btn.sage{background:var(--sage);box-shadow:0 5px 0 var(--sage-d);color:#102010}
+.btn:disabled{opacity:.5;cursor:default}
+input,select{font:inherit;font-weight:700;border:3px solid var(--sage);border-radius:14px;padding:6px 10px;background:var(--card);color:var(--text)}
+input{width:min(100%,280px);text-align:center;margin:10px 0}
+.card{background:var(--blue-l);border-radius:20px;padding:12px 16px;margin:10px 0}
+.card.s{background:var(--sage-l)}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row>.card{flex:1 1 180px;margin:6px 0}
+.ico{font-size:1.7rem;margin-right:6px;vertical-align:middle}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .2em;line-height:1.1;font-weight:800}
+.fr b{border-bottom:3px solid currentColor;padding:0 .25em}
+.fr i{font-style:normal;padding:0 .25em}
+.big{font-size:1.5rem}
+.grid{display:grid;gap:3px;width:min(100%,260px);aspect-ratio:1;margin:8px auto}
+.grid div{border-radius:6px;background:var(--sage-l);border:2px solid var(--sage);transition:background .35s}
+.grid .a{background:#9cc4ea}.grid .c{background:#c5d6b6}
+.grid .ac{background:var(--blue);border-color:var(--blue-d);animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(.88)}}
+.pick{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
+.pick .p{display:flex;flex-direction:column;gap:4px;align-items:center}
+.opts{display:flex;gap:14px;justify-content:center;margin:16px 0}
+.opts .btn{font-size:1.2rem;min-width:130px}
+.fb{border-radius:18px;padding:12px 16px;margin-top:12px;animation:pop .35s}
+.fb.ok{background:var(--ok);border:3px solid var(--sage)}
+.fb.no{background:var(--no);border:3px solid #d98b7e}
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:5;display:flex;justify-content:center;gap:14px;padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));background:linear-gradient(transparent,var(--bg) 40%)}
+.emo{font:inherit;font-size:1rem;font-weight:700;display:block;width:100%;text-align:left;margin:6px 0;border:3px solid var(--sage);background:var(--card);color:var(--text);border-radius:16px;padding:10px 14px;cursor:pointer}
+.emo:hover{background:var(--sage-l)}
+.stars{font-size:2rem}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"><span style="left:6%;top:12%">×</span><span style="left:84%;top:18%;animation-delay:-2s">÷</span><span style="left:12%;top:68%;animation-delay:-4s">+</span><span style="left:78%;top:72%;animation-delay:-1s">−</span><span style="left:45%;top:5%;animation-delay:-3s">½</span><span style="left:50%;top:88%;animation-delay:-5s">¾</span></div>
+<div class="app">
+  <div class="top"><div class="brand">🧮 Matematika Seru</div><div class="dots" id="dots"></div></div>
+
+  <!-- 1 Pembuka -->
+  <section class="slide act center">
+    <div class="mascot">🦉</div>
+    <h1>Petualangan<br>Perkalian Pecahan ✖️</h1>
+    <div><span class="chip">📘 Matematika</span><span class="chip">Kelas VI</span><span class="chip">Fase C</span></div>
+    <p>Halo, teman-teman hebat! Yuk belajar mengalikan pecahan dengan cara yang menyenangkan.</p>
+    <label for="nm">Siapa namamu?</label><br>
+    <input id="nm" placeholder="Tulis namamu di sini" maxlength="24" autocomplete="off"><br>
+    <button class="btn" onclick="go(1)">Mulai Petualangan 🚀</button>
+  </section>
+
+  <!-- 2 Tujuan -->
+  <section class="slide">
+    <h2>🎯 Tujuan Belajar</h2>
+    <p>Setelah belajar, kamu bisa:</p>
+    <div class="card"><span class="ico">✖️</span> Memahami cara mengalikan pecahan.</div>
+    <div class="card s"><span class="ico">🧩</span> Mengalikan pembilang dengan pembilang, penyebut dengan penyebut.</div>
+    <div class="card"><span class="ico">✂️</span> Menyederhanakan hasil perkalian.</div>
+    <div class="card s"><span class="ico">⭐</span> Menjawab soal perkalian pecahan dengan percaya diri.</div>
+  </section>
+
+  <!-- 3 Materi -->
+  <section class="slide">
+    <h2>📖 Materi Inti</h2>
+    <p>Pecahan punya <b>pembilang</b> (angka atas) dan <b>penyebut</b> (angka bawah). Ayo kalikan <span class="fr big"><b>1</b><i>2</i></span> ✖️ <span class="fr big"><b>3</b><i>4</i></span></p>
+    <div class="row">
+      <div class="card"><div class="ico">1️⃣</div><b>Kali pembilang</b><br>1 ✖️ 3 = <b>3</b></div>
+      <div class="card s"><div class="ico">2️⃣</div><b>Kali penyebut</b><br>2 ✖️ 4 = <b>8</b></div>
+      <div class="card"><div class="ico">3️⃣</div><b>Sederhanakan</b><br>Bagi dengan angka yang sama jika bisa.</div>
+    </div>
+    <div class="card s center big"><span class="fr"><b>1</b><i>2</i></span> ✖️ <span class="fr"><b>3</b><i>4</i></span> = <span class="fr"><b>3</b><i>8</i></span></div>
+    <div class="card">💡 <b>Tips:</b> bilangan bulat bisa ditulis sebagai pecahan. 2 = <span class="fr"><b>2</b><i>1</i></span>. Kata "dari" artinya "kali".</div>
+  </section>
+
+  <!-- 4 Aktivitas -->
+  <section class="slide">
+    <h2>🎮 Ayo Mencoba!</h2>
+    <p>Pilih dua pecahan. Lihat kotak: <span style="color:#3b82c4">■ biru</span> = pecahan pertama, <span style="color:#7d9a68">■ hijau</span> = pecahan kedua. Kotak yang <b>bertumpuk</b> adalah hasilnya!</p>
+    <div class="pick" id="pick"></div>
+    <div class="grid" id="grid"></div>
+    <div class="card center big" id="calc"></div>
+    <div class="card s" id="expl"></div>
+  </section>
+
+  <!-- 5 Kuis -->
+  <section class="slide" id="quiz"></section>
+
+  <!-- 6 Refleksi -->
+  <section class="slide" id="refl"></section>
+</div>
+
+<div class="nav">
+  <button class="btn sage" id="prev" onclick="go(cur-1)">◀ Kembali</button>
+  <button class="btn" id="next" onclick="go(cur+1)">Lanjut ▶</button>
+</div>
+
+<script>
+const F=(n,d)=>`<span class="fr"><b>${n}</b><i>${d}</i></span>`;
+const gcd=(a,b)=>b?gcd(b,a%b):a;
+const slides=[...document.querySelectorAll('.slide')];
+let cur=0,score=0,qi=0,answered=false;
+const nm=()=>(document.getElementById('nm').value.trim()||'Teman Hebat');
+const dots=document.getElementById('dots');
+slides.forEach(()=>dots.appendChild(document.createElement('i')));
+function go(i){
+  if(i<0||i>=slides.length)return;
+  cur=i;
+  slides.forEach((s,k)=>s.classList.toggle('act',k===i));
+  [...dots.children].forEach((d,k)=>d.classList.toggle('on',k===i));
+  document.getElementById('prev').style.visibility=i?'visible':'hidden';
+  document.getElementById('next').style.display=(i===0||i===slides.length-1)?'none':'';
+  if(i===4)renderQ();
+  if(i===5)renderR();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* Aktivitas */
+const st={a:1,b:2,c:3,d:4};
+function sel(id,from,to,val){let o='';for(let v=from;v<=to;v++)o+=`<option ${v==val?'selected':''}>${v}</option>`;return `<select id="${id}" aria-label="${id}">${o}</select>`}
+function drawPick(){
+  document.getElementById('pick').innerHTML=
+  `<div class="pick"><div class="p">${sel('sa',1,5,st.a)}<b>―</b>${sel('sb',2,6,st.b)}</div><span class="big">✖️</span><div class="p">${sel('sc',1,5,st.c)}<b>―</b>${sel('sd',2,6,st.d)}</div></div>`;
+  ['sa','sb','sc','sd'].forEach(k=>document.getElementById(k).onchange=e=>{st[k[1]]=+e.target.value;upd()});
+}
+function upd(){
+  if(st.a>st.b)st.a=st.b; if(st.c>st.d)st.c=st.d;
+  drawPick();
+  const {a,b,c,d}=st, g=document.getElementById('grid');
+  g.style.gridTemplateColumns=`repeat(${b},1fr)`;g.style.gridTemplateRows=`repeat(${d},1fr)`;
+  let h='';
+  for(let r=0;r<d;r++)for(let k=0;k<b;k++){const A=k<a,C=r<c;h+=`<div class="${A&&C?'ac':A?'a':C?'c':''}"></div>`}
+  g.innerHTML=h;
+  const n=a*c,m=b*d,q=gcd(n,m);
+  document.getElementById('calc').innerHTML=`${F(a,b)} ✖️ ${F(c,d)} = ${F(n,m)}${q>1?` = ${F(n/q,m/q)}`:''}`;
+  document.getElementById('expl').innerHTML=`🧩 Pembilang: ${a} ✖️ ${c} = <b>${n}</b><br>🧩 Penyebut: ${b} ✖️ ${d} = <b>${m}</b><br>🔎 Kotak bertumpuk ada <b>${n}</b> dari <b>${m}</b> kotak.${q>1?`<br>✂️ Disederhanakan (÷${q}): ${F(n/q,m/q)}`:''}`;
+}
+upd();
+
+/* Kuis benar-salah */
+const Q=[
+ {t:`${F(1,2)} ✖️ ${F(1,3)} = ${F(1,6)}`,a:true,e:`Pembilang 1 ✖️ 1 = 1, penyebut 2 ✖️ 3 = 6. Jadi hasilnya ${F(1,6)}.`},
+ {t:`${F(2,3)} ✖️ ${F(3,4)} = ${F(5,7)}`,a:false,e:`Pecahan tidak dijumlahkan, tetapi dikalikan! Pembilang 2 ✖️ 3 = 6, penyebut 3 ✖️ 4 = 12. Hasilnya ${F(6,12)} = ${F(1,2)}.`},
+ {t:`${F(3,4)} ✖️ 2 = ${F(6,4)}`,a:true,e:`2 ditulis ${F(2,1)}. Pembilang 3 ✖️ 2 = 6, penyebut 4 ✖️ 1 = 4. Hasilnya ${F(6,4)} atau 1 ${F(1,2)}.`},
+ {t:`${F(1,2)} ✖️ ${F(1,2)} = ${F(1,1)}`,a:false,e:`Penyebut juga dikalikan: 2 ✖️ 2 = 4. Jadi hasilnya ${F(1,4)}, bukan ${F(1,1)}.`},
+ {t:`${F(1,2)} dari ${F(1,4)} sama dengan ${F(1,8)}`,a:true,e:`"Dari" artinya kali. ${F(1,2)} ✖️ ${F(1,4)} = ${F(1,8)}.`}
+];
+const praise=['Hebat','Keren','Mantap','Pintar sekali','Luar biasa'];
+function renderQ(){
+  const el=document.getElementById('quiz');
+  if(qi>=Q.length){
+    el.innerHTML=`<div class="center"><div class="mascot">🏆</div><h2>Kuis Selesai!</h2><div class="stars">${'⭐'.repeat(score)}${'☆'.repeat(Q.length-score)}</div><p class="big">Skormu: <b>${score}</b> dari ${Q.length}</p><p>${score>=4?'Wow, kamu jago perkalian pecahan!':score>=2?'Bagus! Sedikit lagi kamu mahir.':'Jangan menyerah, ayo baca materi dan coba lagi!'}</p><button class="btn" onclick="go(5)">Ke Refleksi 💭</button> <button class="btn sage" onclick="qi=0;score=0;renderQ()">Ulangi 🔁</button></div>`;
+    return;
+  }
+  answered=false;
+  const q=Q[qi];
+  el.innerHTML=`<h2>📝 Kuis Benar-Salah</h2><span class="chip">Soal ${qi+1} dari ${Q.length}</span><span class="chip">⭐ ${score}</span><div class="card center big" style="margin-top:14px">${q.t}</div><p class="center">Apakah pernyataan di atas benar?</p><div class="opts"><button class="btn" onclick="ans(true)">✅ Benar</button><button class="btn sage" onclick="ans(false)">❌ Salah</button></div><div id="fb"></div>`;
+}
+function ans(v){
+  if(answered)return;answered=true;
+  const q=Q[qi],ok=v===q.a;
+  if(ok)score++;
+  document.querySelectorAll('#quiz .opts .btn').forEach(b=>b.disabled=true);
+  document.getElementById('fb').innerHTML=ok
+   ?`<div class="fb ok">🎉 <b>${praise[qi%5]}, ${nm()}!</b> Jawabanmu benar. Kamu sudah paham!</div>`
+   :`<div class="fb no">💡 <b>Belum tepat, tidak apa-apa.</b><br>Pernyataan ini <b>${q.a?'BENAR':'SALAH'}</b>. ${q.e}</div>`;
+  document.getElementById('fb').insertAdjacentHTML('beforeend',`<div class="center" style="margin-top:12px"><button class="btn" onclick="qi++;renderQ()">${qi<Q.length-1?'Soal berikutnya ▶':'Lihat hasil 🏁'}</button></div>`);
+}
+
+/* Refleksi */
+const R=[
+ ['😄','Aku sudah paham cara mengalikan pecahan.','Hebat! Coba ajari temanmu supaya makin mahir. 🌟'],
+ ['🙂','Aku paham, tapi masih ragu sedikit.','Tidak apa-apa! Ulangi bagian "Ayo Mencoba" untuk melihat kotaknya lagi. 🔍'],
+ ['🤔','Aku masih bingung dan perlu belajar lagi.','Semangat! Bertanya pada gurumu itu keren. Ingat: kali atas, kali bawah. 💪']
+];
+function renderR(){
+  document.getElementById('refl').innerHTML=`<div class="center"><div class="mascot">🦉</div></div><h2>💭 Umpan Balik & Refleksi</h2>
+  <div class="card s center">Skor kuismu: <b>${score}/${Q.length}</b> ${score>=4?'🌟 Luar biasa!':score>=2?'👍 Bagus!':'🌱 Terus berlatih!'}</div>
+  <p><b>${nm()}</b>, bagaimana perasaanmu setelah belajar? Pilih satu:</p>
+  ${R.map((r,i)=>`<button class="emo" onclick="pickR(${i})">${r[0]} ${r[1]}</button>`).join('')}
+  <div id="rf"></div>
+  <div class="card">✍️ Ingat rumusnya: ${F('a','b')} ✖️ ${F('c','d')} = ${F('a✖️c','b✖️d')}</div>
+  <div class="center"><button class="btn sage" onclick="qi=0;score=0;go(0)">Belajar dari awal 🔁</button></div>`;
+}
+function pickR(i){document.getElementById('rf').innerHTML=`<div class="fb ok">${R[i][2]}</div>`}
+
+go(0);
+</script>
+</body>
+</html>
